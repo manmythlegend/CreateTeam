@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Team Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Google Sans',sans-serif;
+}
+
+/* ===== BACKGROUND ===== */
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+padding:40px 15px;
+color:#e8ecf1;
+
+background:
+radial-gradient(circle at 10% 20%,#1b2130,#090b10 60%);
+overflow-x:hidden;
+}
+
+/* animated glow */
+body::before{
+content:"";
+position:fixed;
+width:600px;
+height:600px;
+background:radial-gradient(circle,#5c7cfa55,transparent 70%);
+top:-150px;
+left:-150px;
+filter:blur(120px);
+animation:float 10s infinite alternate ease-in-out;
+}
+
+@keyframes float{
+to{
+transform:translate(120px,80px);
+}
+}
+
+/* ===== CONTAINER ===== */
+
+.container{
+width:100%;
+max-width:1000px;
+padding:36px;
+border-radius:22px;
+
+background:rgba(18,22,30,.75);
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.06);
+
+box-shadow:
+0 25px 80px rgba(0,0,0,.8),
+inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+h1{
+text-align:center;
+margin-bottom:28px;
+font-weight:600;
+font-size:28px;
+letter-spacing:.6px;
+}
+
+/* ===== INPUTS ===== */
+
+label{
+font-size:12px;
+opacity:.65;
+letter-spacing:.5px;
+}
+
+input,textarea{
+width:100%;
+margin:6px 0 16px;
+padding:14px;
+
+background:#0c1018;
+border:1px solid #262c3d;
+border-radius:12px;
+
+color:white;
+transition:.3s;
+}
+
+input:focus,
+textarea:focus{
+outline:none;
+border-color:#748ffc;
+box-shadow:
+0 0 0 1px #748ffc55,
+0 0 18px #748ffc33;
+transform:scale(1.01);
+}
+
+textarea{
+height:130px;
+resize:none;
+}
+
+/* ===== BUTTONS ===== */
+
+.buttons{
+display:flex;
+gap:14px;
+justify-content:center;
+margin-top:10px;
+}
+
+button{
+padding:12px 22px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:14px;
+font-weight:500;
+transition:.3s;
+}
+
+.primary{
+background:linear-gradient(
+135deg,#5c7cfa,#9775fa);
+color:white;
+box-shadow:0 10px 30px #5c7cfa55;
+}
+
+.primary:hover{
+transform:translateY(-3px);
+box-shadow:0 16px 40px #5c7cfa88;
+}
+
+.secondary{
+background:#1a2030;
+color:#d0d5df;
+}
+
+.secondary:hover{
+background:#252c3f;
+transform:translateY(-3px);
+}
+
+/* ===== TEAM GRID ===== */
+
+.teams{
+margin-top:35px;
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(240px,1fr));
+gap:22px;
+}
+
+/* ===== TEAM CARD ===== */
+
+.team{
+position:relative;
+padding:20px;
+border-radius:18px;
+
+background:
+linear-gradient(
+165deg,
+rgba(35,41,58,.9),
+rgba(15,18,26,.95)
+);
+
+border:1px solid rgba(255,255,255,.05);
+
+transition:.4s;
+
+box-shadow:
+0 18px 45px rgba(0,0,0,.7);
+
+animation:cardIn .45s ease;
+}
+
+.team::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+height:4px;
+width:100%;
+background:var(--accent);
+border-radius:18px 18px 0 0;
+}
+
+.team:hover{
+transform:
+translateY(-8px)
+scale(1.03);
+}
+
+/* ===== TEAM TITLE ===== */
+
+.team h3{
+text-align:center;
+margin-bottom:14px;
+font-size:17px;
+font-weight:600;
+}
+
+/* ===== PLAYERS ===== */
+
+li{
+list-style:none;
+padding:8px 12px;
+margin-bottom:7px;
+border-radius:10px;
+
+background:rgba(255,255,255,.05);
+
+transition:.25s;
+}
+
+li:hover{
+background:rgba(255,255,255,.12);
+transform:translateX(6px);
+}
+
+/* ===== COPY BUTTON ===== */
+
+.copyBtn{
+margin-top:14px;
+width:100%;
+padding:9px;
+
+border-radius:10px;
+border:none;
+
+background:rgba(255,255,255,.06);
+color:#ddd;
+font-size:13px;
+
+transition:.3s;
+}
+
+.copyBtn:hover{
+background:var(--accent);
+color:white;
+box-shadow:0 0 18px var(--accent);
+}
+
+/* ===== ANIMATION ===== */
+
+.fadeOut{
+animation:fadeOut .25s forwards;
+}
+
+@keyframes cardIn{
+from{
+opacity:0;
+transform:translateY(25px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes fadeOut{
+to{
+opacity:0;
+transform:translateY(-15px);
+}
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:600px){
+
+.container{
+padding:22px;
+}
+
+h1{
+font-size:22px;
+}
+
+button{
+width:100%;
+}
+
+.buttons{
+flex-direction:column;
+}
+
+}
+
+</style>
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Make Your Team</h1>
+
+<label>Number of Teams</label>
+<input type="number" id="teamCount" value="2" min="1"
+oninput="createTeamInputs()">
+
+<div id="teamNameInputs"></div>
+
+<label>Enter Players</label>
+<textarea id="names"
+placeholder="Enter names separated by comma or on new line"></textarea>
+
+<div class="buttons">
+<button class="primary" onclick="generateTeams()">Generate Teams</button>
+<button class="secondary" onclick="reshuffle()">Shuffle Again</button>
+</div>
+
+<div id="output" class="teams"></div>
+
+</div>
+
+<script>
+
+const colors=[
+"#ff6b6b","#4dabf7","#51cf66",
+"#ffd43b","#845ef7","#20c997",
+"#ffa94d","#f06595"
+];
+
+function createTeamInputs(){
+let count=document.getElementById("teamCount").value;
+let box=document.getElementById("teamNameInputs");
+box.innerHTML="";
+
+for(let i=0;i<count;i++){
+box.innerHTML+=`
+<label>Team ${i+1} Name</label>
+<input type="text" id="teamName${i}"
+placeholder="Enter team name">
+`;
+}
+}
+createTeamInputs();
+
+function shuffle(arr){
+for(let i=arr.length-1;i>0;i--){
+let j=Math.floor(Math.random()*(i+1));
+[arr[i],arr[j]]=[arr[j],arr[i]];
+}
+}
+
+function getPlayers(){
+return document.getElementById("names").value
+.split(/[\n,]/)
+.map(n=>n.trim())
+.filter(Boolean);
+}
+
+function getTeamNames(count){
+let names=[];
+for(let i=0;i<count;i++){
+let val=document.getElementById(`teamName${i}`).value;
+names.push(val||`Team ${i+1}`);
+}
+return names;
+}
+
+function generateTeams(){
+
+let count=parseInt(document.getElementById("teamCount").value);
+let players=getPlayers();
+
+if(!players.length){
+alert("Add players!");
+return;
+}
+
+shuffle(players);
+
+let teams=Array.from({length:count},()=>[]);
+players.forEach((p,i)=>teams[i%count].push(p));
+
+window.generatedTeams=teams;
+window.generatedNames=getTeamNames(count);
+
+renderTeams();
+}
+
+function reshuffle(){
+document.querySelectorAll(".team")
+.forEach(c=>c.classList.add("fadeOut"));
+
+setTimeout(generateTeams,250);
+}
+
+function renderTeams(){
+
+let output=document.getElementById("output");
+output.innerHTML="";
+
+generatedTeams.forEach((team,i)=>{
+
+let div=document.createElement("div");
+div.className="team";
+div.style.setProperty("--accent",
+colors[i%colors.length]);
+
+div.innerHTML=`
+<h3> ${generatedNames[i]}</h3>
+<ul>
+${team.map(p=>`<li>${p}</li>`).join("")}
+</ul>
+<button class="copyBtn"
+onclick="copyTeam(${i})">
+Copy Team
+</button>
+`;
+
+output.appendChild(div);
+});
+}
+
+function copyTeam(i){
+let text=generatedNames[i]+":\n"+
+generatedTeams[i].join("\n");
+
+navigator.clipboard.writeText(text);
+}
+
+</script>
+
+</body>
+</html>
