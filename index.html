@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Team Generator</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
@@ -15,6 +16,11 @@ box-sizing:border-box;
 font-family:'Google Sans',sans-serif;
 }
 
+html,body{
+width:100%;
+overflow-x:hidden;
+}
+
 /* ===== BACKGROUND ===== */
 
 body{
@@ -26,7 +32,6 @@ color:#e8ecf1;
 
 background:
 radial-gradient(circle at 10% 20%,#1b2130,#090b10 60%);
-overflow-x:hidden;
 }
 
 /* animated glow */
@@ -40,6 +45,7 @@ top:-150px;
 left:-150px;
 filter:blur(120px);
 animation:float 10s infinite alternate ease-in-out;
+z-index:-1;
 }
 
 @keyframes float{
@@ -93,6 +99,7 @@ border-radius:12px;
 
 color:white;
 transition:.3s;
+font-size:16px;
 }
 
 input:focus,
@@ -102,7 +109,6 @@ border-color:#748ffc;
 box-shadow:
 0 0 0 1px #748ffc55,
 0 0 18px #748ffc33;
-transform:scale(1.01);
 }
 
 textarea{
@@ -117,21 +123,21 @@ display:flex;
 gap:14px;
 justify-content:center;
 margin-top:10px;
+flex-wrap:wrap;
 }
 
 button{
-padding:12px 22px;
+padding:14px 22px;
 border:none;
 border-radius:12px;
 cursor:pointer;
-font-size:14px;
+font-size:15px;
 font-weight:500;
 transition:.3s;
 }
 
 .primary{
-background:linear-gradient(
-135deg,#5c7cfa,#9775fa);
+background:linear-gradient(135deg,#5c7cfa,#9775fa);
 color:white;
 box-shadow:0 10px 30px #5c7cfa55;
 }
@@ -156,8 +162,7 @@ transform:translateY(-3px);
 .teams{
 margin-top:35px;
 display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(240px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:22px;
 }
 
@@ -197,9 +202,7 @@ border-radius:18px 18px 0 0;
 }
 
 .team:hover{
-transform:
-translateY(-8px)
-scale(1.03);
+transform:translateY(-6px);
 }
 
 /* ===== TEAM TITLE ===== */
@@ -218,15 +221,12 @@ list-style:none;
 padding:8px 12px;
 margin-bottom:7px;
 border-radius:10px;
-
 background:rgba(255,255,255,.05);
-
 transition:.25s;
 }
 
 li:hover{
 background:rgba(255,255,255,.12);
-transform:translateX(6px);
 }
 
 /* ===== COPY BUTTON ===== */
@@ -234,22 +234,18 @@ transform:translateX(6px);
 .copyBtn{
 margin-top:14px;
 width:100%;
-padding:9px;
-
+padding:10px;
 border-radius:10px;
 border:none;
-
 background:rgba(255,255,255,.06);
 color:#ddd;
-font-size:13px;
-
+font-size:14px;
 transition:.3s;
 }
 
 .copyBtn:hover{
 background:var(--accent);
 color:white;
-box-shadow:0 0 18px var(--accent);
 }
 
 /* ===== ANIMATION ===== */
@@ -280,25 +276,31 @@ transform:translateY(-15px);
 
 @media(max-width:600px){
 
+body{
+padding:20px 12px;
+}
+
 .container{
-padding:22px;
+padding:20px;
 }
 
 h1{
 font-size:22px;
 }
 
-button{
-width:100%;
-}
-
 .buttons{
 flex-direction:column;
 }
 
+button{
+width:100%;
 }
 
-</style>
+textarea{
+height:110px;
+}
+
+}
 
 </style>
 </head>
@@ -317,7 +319,7 @@ oninput="createTeamInputs()">
 
 <label>Enter Players</label>
 <textarea id="names"
-placeholder="Enter names separated by comma or on new line"></textarea>
+placeholder="Enter names separated by comma or new line"></textarea>
 
 <div class="buttons">
 <button class="primary" onclick="generateTeams()">Generate Teams</button>
@@ -396,6 +398,8 @@ renderTeams();
 }
 
 function reshuffle(){
+if(!window.generatedTeams) return;
+
 document.querySelectorAll(".team")
 .forEach(c=>c.classList.add("fadeOut"));
 
@@ -415,12 +419,12 @@ div.style.setProperty("--accent",
 colors[i%colors.length]);
 
 div.innerHTML=`
-<h3> ${generatedNames[i]}</h3>
+<h3>${generatedNames[i]}</h3>
 <ul>
 ${team.map(p=>`<li>${p}</li>`).join("")}
 </ul>
 <button class="copyBtn"
-onclick="copyTeam(${i})">
+onclick="copyTeam(${i},this)">
 Copy Team
 </button>
 `;
@@ -429,11 +433,14 @@ output.appendChild(div);
 });
 }
 
-function copyTeam(i){
+function copyTeam(i,btn){
 let text=generatedNames[i]+":\n"+
 generatedTeams[i].join("\n");
 
-navigator.clipboard.writeText(text);
+navigator.clipboard.writeText(text).then(()=>{
+btn.innerText="Copied!";
+setTimeout(()=>btn.innerText="Copy Team",1500);
+});
 }
 
 </script>
