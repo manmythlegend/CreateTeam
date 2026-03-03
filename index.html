@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Team Generator</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -21,37 +21,13 @@ width:100%;
 overflow-x:hidden;
 }
 
-/* ===== BACKGROUND ===== */
-
 body{
 min-height:100vh;
 display:flex;
 justify-content:center;
 padding:40px 15px;
 color:#e8ecf1;
-
-background:
-radial-gradient(circle at 10% 20%,#1b2130,#090b10 60%);
-}
-
-/* animated glow */
-body::before{
-content:"";
-position:fixed;
-width:600px;
-height:600px;
-background:radial-gradient(circle,#5c7cfa55,transparent 70%);
-top:-150px;
-left:-150px;
-filter:blur(120px);
-animation:float 10s infinite alternate ease-in-out;
-z-index:-1;
-}
-
-@keyframes float{
-to{
-transform:translate(120px,80px);
-}
+background:radial-gradient(circle at 10% 20%,#1b2130,#090b10 60%);
 }
 
 /* ===== CONTAINER ===== */
@@ -61,59 +37,105 @@ width:100%;
 max-width:1000px;
 padding:36px;
 border-radius:22px;
-
 background:rgba(18,22,30,.75);
 backdrop-filter:blur(20px);
-
 border:1px solid rgba(255,255,255,.06);
-
-box-shadow:
-0 25px 80px rgba(0,0,0,.8),
-inset 0 1px 0 rgba(255,255,255,.05);
+box-shadow:0 25px 80px rgba(0,0,0,.8);
 }
 
 h1{
 text-align:center;
 margin-bottom:28px;
 font-weight:600;
-font-size:28px;
-letter-spacing:.6px;
+font-size:26px;
 }
 
 /* ===== INPUTS ===== */
 
 label{
-font-size:12px;
-opacity:.65;
-letter-spacing:.5px;
+font-size:13px;
+opacity:.75;
 }
 
 input,textarea{
 width:100%;
 margin:6px 0 16px;
 padding:14px;
-
 background:#0c1018;
 border:1px solid #262c3d;
 border-radius:12px;
-
 color:white;
-transition:.3s;
 font-size:16px;
 }
 
-input:focus,
-textarea:focus{
-outline:none;
-border-color:#748ffc;
-box-shadow:
-0 0 0 1px #748ffc55,
-0 0 18px #748ffc33;
+textarea{
+height:120px;
+resize:none;
 }
 
-textarea{
-height:130px;
-resize:none;
+input:focus,textarea:focus{
+outline:none;
+border-color:#748ffc;
+}
+
+/* ===== ANIMATED TOGGLE ===== */
+
+.toggleWrapper{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:20px;
+}
+
+.toggleLabel{
+font-size:14px;
+opacity:.85;
+}
+
+.switch{
+position:relative;
+display:inline-block;
+width:50px;
+height:26px;
+}
+
+.switch input{
+opacity:0;
+width:0;
+height:0;
+}
+
+.slider{
+position:absolute;
+cursor:pointer;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background-color:#2b3245;
+border-radius:34px;
+transition:.4s;
+}
+
+.slider:before{
+position:absolute;
+content:"";
+height:20px;
+width:20px;
+left:3px;
+bottom:3px;
+background-color:white;
+border-radius:50%;
+transition:.4s;
+}
+
+input:checked + .slider{
+background:linear-gradient(135deg,#5c7cfa,#9775fa);
+box-shadow:0 0 12px #5c7cfa88;
+}
+
+input:checked + .slider:before{
+transform:translateX(24px);
 }
 
 /* ===== BUTTONS ===== */
@@ -122,7 +144,6 @@ resize:none;
 display:flex;
 gap:14px;
 justify-content:center;
-margin-top:10px;
 flex-wrap:wrap;
 }
 
@@ -132,19 +153,12 @@ border:none;
 border-radius:12px;
 cursor:pointer;
 font-size:15px;
-font-weight:500;
 transition:.3s;
 }
 
 .primary{
 background:linear-gradient(135deg,#5c7cfa,#9775fa);
 color:white;
-box-shadow:0 10px 30px #5c7cfa55;
-}
-
-.primary:hover{
-transform:translateY(-3px);
-box-shadow:0 16px 40px #5c7cfa88;
 }
 
 .secondary{
@@ -152,8 +166,7 @@ background:#1a2030;
 color:#d0d5df;
 }
 
-.secondary:hover{
-background:#252c3f;
+button:hover{
 transform:translateY(-3px);
 }
 
@@ -169,137 +182,56 @@ gap:22px;
 /* ===== TEAM CARD ===== */
 
 .team{
-position:relative;
 padding:20px;
 border-radius:18px;
-
-background:
-linear-gradient(
-165deg,
-rgba(35,41,58,.9),
-rgba(15,18,26,.95)
-);
-
+background:linear-gradient(165deg,rgba(35,41,58,.9),rgba(15,18,26,.95));
 border:1px solid rgba(255,255,255,.05);
-
-transition:.4s;
-
-box-shadow:
-0 18px 45px rgba(0,0,0,.7);
-
-animation:cardIn .45s ease;
 }
-
-.team::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-height:4px;
-width:100%;
-background:var(--accent);
-border-radius:18px 18px 0 0;
-}
-
-.team:hover{
-transform:translateY(-6px);
-}
-
-/* ===== TEAM TITLE ===== */
 
 .team h3{
 text-align:center;
-margin-bottom:14px;
-font-size:17px;
-font-weight:600;
+margin-bottom:12px;
 }
-
-/* ===== PLAYERS ===== */
 
 li{
 list-style:none;
 padding:8px 12px;
-margin-bottom:7px;
-border-radius:10px;
-background:rgba(255,255,255,.05);
-transition:.25s;
-}
-
-li:hover{
-background:rgba(255,255,255,.12);
+margin-bottom:6px;
+border-radius:8px;
+background:rgba(255,255,255,.06);
 }
 
 /* ===== COPY BUTTON ===== */
 
 .copyBtn{
-margin-top:14px;
+margin-top:10px;
 width:100%;
-padding:10px;
-border-radius:10px;
+padding:9px;
+border-radius:8px;
 border:none;
-background:rgba(255,255,255,.06);
+background:rgba(255,255,255,.08);
 color:#ddd;
-font-size:14px;
+cursor:pointer;
 transition:.3s;
 }
 
 .copyBtn:hover{
-background:var(--accent);
+background:#5c7cfa;
 color:white;
-}
-
-/* ===== ANIMATION ===== */
-
-.fadeOut{
-animation:fadeOut .25s forwards;
-}
-
-@keyframes cardIn{
-from{
-opacity:0;
-transform:translateY(25px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes fadeOut{
-to{
-opacity:0;
-transform:translateY(-15px);
-}
 }
 
 /* ===== MOBILE ===== */
 
 @media(max-width:600px){
-
-body{
-padding:20px 12px;
-}
-
 .container{
 padding:20px;
 }
-
-h1{
-font-size:22px;
-}
-
 .buttons{
 flex-direction:column;
 }
-
 button{
 width:100%;
 }
-
-textarea{
-height:110px;
-}
-
 }
 
 </style>
@@ -315,7 +247,15 @@ height:110px;
 <input type="number" id="teamCount" value="2" min="1"
 oninput="createTeamInputs()">
 
-<div id="teamNameInputs"></div>
+<div class="toggleWrapper">
+<span class="toggleLabel">Enable Custom Team Names</span>
+<label class="switch">
+<input type="checkbox" id="enableNames" onchange="toggleTeamNames()">
+<span class="slider"></span>
+</label>
+</div>
+
+<div id="teamNameInputs" style="display:none;"></div>
 
 <label>Enter Players</label>
 <textarea id="names"
@@ -332,16 +272,20 @@ placeholder="Enter names separated by comma or new line"></textarea>
 
 <script>
 
-const colors=[
-"#ff6b6b","#4dabf7","#51cf66",
-"#ffd43b","#845ef7","#20c997",
-"#ffa94d","#f06595"
-];
+function toggleTeamNames(){
+let box=document.getElementById("teamNameInputs");
+box.style.display=document.getElementById("enableNames").checked
+? "block" : "none";
+createTeamInputs();
+}
 
 function createTeamInputs(){
 let count=document.getElementById("teamCount").value;
+let enabled=document.getElementById("enableNames").checked;
 let box=document.getElementById("teamNameInputs");
 box.innerHTML="";
+
+if(!enabled) return;
 
 for(let i=0;i<count;i++){
 box.innerHTML+=`
@@ -351,6 +295,7 @@ placeholder="Enter team name">
 `;
 }
 }
+
 createTeamInputs();
 
 function shuffle(arr){
@@ -369,9 +314,15 @@ return document.getElementById("names").value
 
 function getTeamNames(count){
 let names=[];
+let enabled=document.getElementById("enableNames").checked;
+
 for(let i=0;i<count;i++){
+if(enabled){
 let val=document.getElementById(`teamName${i}`).value;
 names.push(val||`Team ${i+1}`);
+}else{
+names.push(`Team ${i+1}`);
+}
 }
 return names;
 }
@@ -399,11 +350,7 @@ renderTeams();
 
 function reshuffle(){
 if(!window.generatedTeams) return;
-
-document.querySelectorAll(".team")
-.forEach(c=>c.classList.add("fadeOut"));
-
-setTimeout(generateTeams,250);
+generateTeams();
 }
 
 function renderTeams(){
@@ -415,8 +362,6 @@ generatedTeams.forEach((team,i)=>{
 
 let div=document.createElement("div");
 div.className="team";
-div.style.setProperty("--accent",
-colors[i%colors.length]);
 
 div.innerHTML=`
 <h3>${generatedNames[i]}</h3>
